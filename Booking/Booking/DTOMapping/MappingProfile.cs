@@ -12,8 +12,8 @@ namespace Booking.DTOMapping
     {
         public MappingProfile()
         {
-            CreateMap<RegisterDTO, RegisterVM>().ReverseMap();
-            CreateMap<UserDTO, UserVM>().ReverseMap();
+            CreateMap<RegisterVM, UserDTO>().ReverseMap();
+            CreateMap<LoginDTO, UserTable>().ReverseMap();
             CreateMap<BookingDTO, BookingTable>().ReverseMap();
             CreateMap<TicketDTO, TicketTable>().ReverseMap();
           

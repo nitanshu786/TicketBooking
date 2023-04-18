@@ -1,4 +1,5 @@
 ﻿using Booking.Model;
+using Booking.Model.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,6 @@ namespace Booking.Repository.IRepository
     {
         bool IsUniqueUser(string Name,string email);
         UserTable Login(string Email, string Passward);
-        UserTable Registers(RegisterVM registerVM);
+        UserTable Registers(UserDTO userDTO);
     }
 }

@@ -28,8 +28,9 @@ namespace Booking
             string cs = Configuration.GetConnectionString("constr");
             services.AddDbContext<ApplicationDbContext>(ioption => ioption.UseSqlServer(cs));
             services.Configure<SMTPConfigModel>(Configuration.GetSection("SMTPConfig"));
-
+            services.AddScoped<ITicketRepo, TicketRepo>();
             services.AddScoped<IRegister, RegisterUser>();
+          
             services.AddAutoMapper(typeof(MappingProfile));
 
 
@@ -38,6 +39,19 @@ namespace Booking
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Booking", Version = "v1" });
+            });
+            //core
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: "MyCores",
+                    builder =>
+                    {
+                        builder.WithOrigins("http://localhost:4200")
+                        .AllowAnyOrigin()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                    });
             });
         }
 
@@ -52,7 +66,7 @@ namespace Booking
             }
 
             app.UseHttpsRedirection();
-
+            app.UseCors("MyCores");
             app.UseRouting();
 
             app.UseAuthorization();

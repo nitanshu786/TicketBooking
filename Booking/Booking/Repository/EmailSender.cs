@@ -1,4 +1,5 @@
-﻿using Booking.Model;
+﻿using Booking.Data;
+using Booking.Model;
 using Booking.Repository.IRepository;
 using Microsoft.Extensions.Options;
 using System;
@@ -16,9 +17,11 @@ namespace Booking.Repository
     {
         private const string TemplatePath = @"EmailTemplate/{0}.html";
         private readonly SMTPConfigModel _smtpconfig;
-        public EmailSender(IOptions<SMTPConfigModel> smtpconfig)
+        private readonly ApplicationDbContext _context;
+        public EmailSender(IOptions<SMTPConfigModel> smtpconfig,ApplicationDbContext context)
         {
             _smtpconfig = smtpconfig.Value;
+            _context=context;
         }
         public  Task SendEmailAsync(string email, string subject)
         {
@@ -31,7 +34,7 @@ namespace Booking.Repository
         {
             try
             {
-                string ToEmail = string.IsNullOrEmpty(email) ? _smtpconfig.ToEmail : email;
+                string ToEmail =  email;
                 MailMessage mail = new MailMessage()
                 {
                     From = new MailAddress(_smtpconfig.UsernameEmail, "My email Name")
@@ -41,7 +44,7 @@ namespace Booking.Repository
                 mail.CC.Add(_smtpconfig.CcEmail);
                 mail.Subject = "Ticket Booking:" + subject;
                 mail.IsBodyHtml = true;
-                mail.Body = GetEmailBody("TestEmail");
+                mail.Body = _smtpconfig.Filepath;
                
                 mail.Priority = MailPriority.High;
                 using (SmtpClient smtp = new SmtpClient(_smtpconfig.PrimaryDomain, _smtpconfig.PrimaryPort))

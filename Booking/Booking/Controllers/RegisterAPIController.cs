@@ -28,7 +28,7 @@ namespace Booking.Controllers
         }
 
         [HttpPost("register")]
-        public IActionResult Register([FromBody] RegisterDTO register )
+        public IActionResult Register([FromBody] RegisterVM register )
         {
             if (ModelState.IsValid)
             {
@@ -36,10 +36,10 @@ namespace Booking.Controllers
                 {
                     _emailSender.SendEmailAsync(register.Email, "This is test email subject from Booking Team");
                 }
-                //var reg = _register.IsUniqueUser(registerVM.Name, registerVM.Email);
-                //if (!reg) return BadRequest("Username already exist please try new username");
-                var logs = _mapper.Map<RegisterDTO, RegisterVM>(register);
-                
+                var reg = _register.IsUniqueUser(register.Name, register.Email);
+                if (!reg) return BadRequest("Username already exist please try new username");
+                var logs = _mapper.Map<RegisterVM, UserDTO>(register);
+
                 var enc = _register.Registers(logs);
                
                 if (enc == null) return BadRequest();
@@ -51,10 +51,10 @@ namespace Booking.Controllers
 
         }
         [HttpPost("Login")]
-        public IActionResult Login([FromBody] UserDTO uservm)
+        public IActionResult Login([FromBody] LoginDTO login)
         {
 
-            var user = _mapper.Map<UserDTO, UserVM>(uservm);
+            var user = _mapper.Map<LoginDTO, UserTable >(login);
 
 
             var log = _register.Login(user.Email, Encryption(user.Password));

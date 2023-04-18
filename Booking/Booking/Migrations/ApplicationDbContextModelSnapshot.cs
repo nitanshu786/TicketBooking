@@ -50,21 +50,6 @@ namespace Booking.Migrations
                     b.ToTable("BookingTables");
                 });
 
-            modelBuilder.Entity("Booking.Model.RoleTable", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("RoleTables");
-                });
-
             modelBuilder.Entity("Booking.Model.TicketTable", b =>
                 {
                     b.Property<int>("Id")
@@ -77,6 +62,9 @@ namespace Booking.Migrations
 
                     b.Property<string>("Image")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -114,15 +102,10 @@ namespace Booking.Migrations
                     b.Property<DateTime>("RegisterDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("RoleTableId")
-                        .HasColumnType("int");
+                    b.Property<string>("Role")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("RoleTableId");
 
                     b.ToTable("UserTables");
                 });
@@ -140,15 +123,6 @@ namespace Booking.Migrations
                     b.Navigation("TicketTable");
 
                     b.Navigation("UserTable");
-                });
-
-            modelBuilder.Entity("Booking.Model.UserTable", b =>
-                {
-                    b.HasOne("Booking.Model.RoleTable", "RoleTable")
-                        .WithMany()
-                        .HasForeignKey("RoleTableId");
-
-                    b.Navigation("RoleTable");
                 });
 #pragma warning restore 612, 618
         }

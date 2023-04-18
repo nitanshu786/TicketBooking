@@ -16,8 +16,10 @@ namespace Booking.Model
         public DateTime RegisterDate { get; set; }
         public DateTime ExpireDate { get; set; }
         public DateTime RefreshDates { get; set; }
-        public int RoleId { get; set; }
-        public RoleTable RoleTable { get; set; }
+        public string Role { get; set; }
+        [NotMapped]
+        public string Token { get; set; }
+      
        
 
     }

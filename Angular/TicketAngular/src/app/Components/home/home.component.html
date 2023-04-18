@@ -1,0 +1,30 @@
+<div class="container">
+<div class="row">
+    <div class="col-3 p-4" *ngFor="let emp of ticket">
+        <div class="  table-bordered table-stripe ">
+      <div class="card ">
+        <img class="card-img-top table-bordered" [src]="emp.image" >
+        
+          <a class="card-title">Movie Name: {{ emp.name }}</a>
+          
+            <div class="col ">
+                <a  class="btn btn-primary form-control " >Book now</a>
+            </div>
+
+          </div>
+        </div>
+    
+    
+    </div>
+  </div>
+</div>
+  
+          
+
+
+
+
+    
+    
+
+

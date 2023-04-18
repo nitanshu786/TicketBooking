@@ -1,5 +1,6 @@
 ﻿using Booking.Data;
 using Booking.Model;
+using Booking.Model.DTO;
 using Booking.Repository.IRepository;
 using System;
 using System.Collections.Generic;
@@ -24,8 +25,8 @@ namespace Booking.Repository
             var auth = _context.UserTables.FirstOrDefault(s => s.Email == Email && s. Password==Passward );
           
 
-            //if (auth == null)
-            //    return null;
+            if (auth == null)
+               return null;
 
 
             //else
@@ -50,17 +51,19 @@ namespace Booking.Repository
                 return auth;
             }
 
-        public UserTable Registers(RegisterVM registerVM)
+        public UserTable Registers(UserDTO userDTO)
         {
 
             var user = new UserTable()
             {
-                Name = registerVM.Name,
+                Name = userDTO.Name,
 
-                Email = registerVM.Email,
-                Address = registerVM.Address,
-                RegisterDate = registerVM.RegisterDate,
-                RoleId = registerVM.RoleId=2
+                Email = userDTO.Email,
+                Address = userDTO.Address,
+                RegisterDate = DateTime.Now,
+                ExpireDate = DateTime.Today.AddDays(2),
+                RefreshDates= DateTime.Now,
+                 Role= "User"
                     
                 };
                
