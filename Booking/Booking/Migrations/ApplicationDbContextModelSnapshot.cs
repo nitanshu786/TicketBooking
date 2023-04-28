@@ -32,20 +32,14 @@ namespace Booking.Migrations
                     b.Property<int>("TicketId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("TicketTableId")
-                        .HasColumnType("int");
-
                     b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("UserTableId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TicketTableId");
+                    b.HasIndex("TicketId");
 
-                    b.HasIndex("UserTableId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("BookingTables");
                 });
@@ -114,11 +108,15 @@ namespace Booking.Migrations
                 {
                     b.HasOne("Booking.Model.TicketTable", "TicketTable")
                         .WithMany()
-                        .HasForeignKey("TicketTableId");
+                        .HasForeignKey("TicketId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Booking.Model.UserTable", "UserTable")
                         .WithMany()
-                        .HasForeignKey("UserTableId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("TicketTable");
 

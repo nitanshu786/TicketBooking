@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { Booking } from 'src/app/Classes/booking';
 import { Register } from 'src/app/Classes/register';
 import { RegisterService } from 'src/app/Services/register.service';
 
@@ -9,9 +10,9 @@ import { RegisterService } from 'src/app/Services/register.service';
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent {
-
+book:Booking= new Booking();
   newRegister:Register= new Register();
-   date: Date=new Date;
+  
    
    
 
@@ -20,11 +21,16 @@ export class RegisterComponent {
   
   regClick()
     {
-      
-      
-      this.registerservice.checkUser(this.newRegister).subscribe(
+      debugger;
+     
+     
+      this.registerservice.emailuser(this.newRegister).subscribe(
         (response)=>{
-          this.router.navigateByUrl("/login");
+         
+          this.newRegister.name="";
+          this.newRegister.address="";
+          this.newRegister.email="";
+       
         },
         (error)=>{
           console.log(error);

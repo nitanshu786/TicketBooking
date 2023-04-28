@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Booking.Migrations
 {
-    public partial class Intiload : Migration
+    public partial class newbookingtable : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -15,7 +15,8 @@ namespace Booking.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Count = table.Column<int>(type: "int", nullable: false)
+                    Count = table.Column<int>(type: "int", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -31,20 +32,15 @@ namespace Booking.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RegisterDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ExpireDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     RefreshDates = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TicketId = table.Column<int>(type: "int", nullable: false)
+                    Role = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_UserTables", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_UserTables_TicketTables_TicketId",
-                        column: x => x.TicketId,
-                        principalTable: "TicketTables",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -54,42 +50,35 @@ namespace Booking.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(type: "int", nullable: false),
-                    UserTableId = table.Column<int>(type: "int", nullable: true),
                     TicketId = table.Column<int>(type: "int", nullable: false),
-                    TicketTableId = table.Column<int>(type: "int", nullable: true),
                     Count = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_BookingTables", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_BookingTables_TicketTables_TicketTableId",
-                        column: x => x.TicketTableId,
+                        name: "FK_BookingTables_TicketTables_TicketId",
+                        column: x => x.TicketId,
                         principalTable: "TicketTables",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_BookingTables_UserTables_UserTableId",
-                        column: x => x.UserTableId,
+                        name: "FK_BookingTables_UserTables_UserId",
+                        column: x => x.UserId,
                         principalTable: "UserTables",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_BookingTables_TicketTableId",
+                name: "IX_BookingTables_TicketId",
                 table: "BookingTables",
-                column: "TicketTableId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_BookingTables_UserTableId",
-                table: "BookingTables",
-                column: "UserTableId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserTables_TicketId",
-                table: "UserTables",
                 column: "TicketId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BookingTables_UserId",
+                table: "BookingTables",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -98,10 +87,10 @@ namespace Booking.Migrations
                 name: "BookingTables");
 
             migrationBuilder.DropTable(
-                name: "UserTables");
+                name: "TicketTables");
 
             migrationBuilder.DropTable(
-                name: "TicketTables");
+                name: "UserTables");
         }
     }
 }

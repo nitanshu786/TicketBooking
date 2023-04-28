@@ -1,14 +1,15 @@
-<div class="container">
+
+<div class="container bg-light" >
 <div class="row">
     <div class="col-3 p-4" *ngFor="let emp of ticket">
-        <div class="  table-bordered table-stripe ">
-      <div class="card ">
-        <img class="card-img-top table-bordered" [src]="emp.image" >
+        <div class=" table-bordered table-stripe">
+      <div class="card bg-dark">
+        <img class="card-img-top border border-white" [src]="emp.image" >
         
-          <a class="card-title">Movie Name: {{ emp.name }}</a>
+          <a class="text-white m-2">Movie Name: {{ emp.name }}</a>
           
             <div class="col ">
-                <a  class="btn btn-primary form-control " >Book now</a>
+                <button   class="btn btn-primary form-control"  (click)="bookingticket(emp)" >Book now </button>
             </div>
 
           </div>
@@ -18,6 +19,28 @@
     </div>
   </div>
 </div>
+ 
+
+
+<div class="modal" tabindex="-1" role="dailog" id="cart">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Booking Cart</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" >
+       
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
   
           
 

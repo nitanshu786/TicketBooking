@@ -2,6 +2,7 @@
 using Booking.Model;
 using Booking.Model.DTO;
 using Booking.Repository.IRepository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -13,6 +14,7 @@ namespace Booking.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class TicketAPIController : ControllerBase
     {
         private readonly ITicketRepo _ticketRepo;
@@ -22,7 +24,7 @@ namespace Booking.Controllers
             _ticketRepo = ticketRepo;
             _mapper = mapper;
         }
-
+        [AllowAnonymous]
         [Route("get")]
         [HttpGet]
         public IEnumerable<TicketDTO> GetTickets()
@@ -45,7 +47,7 @@ namespace Booking.Controllers
             if (ticketDTO == null)
                 return BadRequest(ModelState);
             var Ticket = _mapper.Map<TicketDTO, TicketTable>(ticketDTO);
-            Ticket.Count += 1;
+            
             _ticketRepo.AddTicket(Ticket);
             return Ok(Ticket);
 

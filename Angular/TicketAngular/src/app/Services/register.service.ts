@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http'
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { Register } from '../Classes/register';
 
 @Injectable({
@@ -13,7 +13,23 @@ export class RegisterService {
 
   checkUser(newemp:Register):Observable<Register>
   {
-    return this.httpclient.post<Register>("https://localhost:44334/api/RegisterAPI/register",newemp)
-  }
 
-}
+    return this.httpclient.post<Register>("https://localhost:44334/api/RegisterAPI/register",newemp);
+  }
+ emailuser(email:Register):Observable<Register>
+ {
+  debugger;
+  return this.httpclient.post<Register>("https://localhost:44334/api/RegisterAPI/email",email).
+
+  pipe(map(u=>{
+        if(u)
+        {
+          sessionStorage["register"]=JSON.stringify(u);
+        }
+    return u;
+  }))
+    } 
+ }
+  
+
+

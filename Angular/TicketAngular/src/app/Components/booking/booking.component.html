@@ -1,0 +1,51 @@
+
+
+<h2 class="text-primary text-center">Booking List</h2>
+
+
+  
+<div class="p-2 m-2">
+<table class="table table-bordered table-stripe">
+<thead>
+    <tr>
+        <th>Name</th>
+        <th>UserId</th>
+        <th>Movie</th>
+        <th>TicketId</th>
+        <th>Image</th>
+        <th>count</th>
+        
+        <th>Action</th>
+
+    </tr>
+</thead>
+<tbody>
+  <tr *ngFor="let emp of booking ">
+    <td>{{emp.userTable.name}}</td>
+    <td>{{emp.userId}}</td>
+    <td>{{emp.ticketTable.name}}</td>
+    <td>{{emp.ticketId}}</td>
+    <td>
+        <img [src]="emp.ticketTable.image" height="50" >
+      </td>
+     <td>{{emp.count}}</td>
+   
+  
+
+    
+    
+
+  </tr>
+</tbody>
+</table>
+</div>
+
+<!-- new -->
+
+
+
+
+
+  
+  
+

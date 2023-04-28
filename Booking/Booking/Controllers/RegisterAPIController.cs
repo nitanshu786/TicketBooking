@@ -26,16 +26,22 @@ namespace Booking.Controllers
             _emailSender = emailSender;
             _mapper = mapper;
         }
+        [HttpPost("email")]
+        public IActionResult Email([FromBody] RegisterVM registerVM)
+        {
+            if (registerVM.Email != null)
+            {
+                _emailSender.SendEmailAsync(registerVM.Email, "This is test email subject from Booking Team");
+            }
+            return Ok(registerVM);
+        }
 
         [HttpPost("register")]
         public IActionResult Register([FromBody] RegisterVM register )
         {
             if (ModelState.IsValid)
             {
-               if(register.Email!=null)
-                {
-                    _emailSender.SendEmailAsync(register.Email, "This is test email subject from Booking Team");
-                }
+               
                 var reg = _register.IsUniqueUser(register.Name, register.Email);
                 if (!reg) return BadRequest("Username already exist please try new username");
                 var logs = _mapper.Map<RegisterVM, UserDTO>(register);

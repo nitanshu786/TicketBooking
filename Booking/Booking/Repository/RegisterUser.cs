@@ -2,9 +2,13 @@
 using Booking.Model;
 using Booking.Model.DTO;
 using Booking.Repository.IRepository;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,43 +17,45 @@ namespace Booking.Repository
     public class RegisterUser : IRegister
     {
         private readonly ApplicationDbContext _context;
-
-        public RegisterUser(ApplicationDbContext context)
+        private readonly JwtToken _jwtToken;
+        public RegisterUser(ApplicationDbContext context, IOptions<JwtToken> jwttoken)
         {
             _context = context;
+            _jwtToken = jwttoken.Value;
         }
 
-     
+
         public UserTable Login(string Email, string Passward)
         {
-            var auth = _context.UserTables.FirstOrDefault(s => s.Email == Email && s. Password==Passward );
-          
+            var auth = _context.UserTables.FirstOrDefault(s => s.Email == Email && s.Password == Passward);
+
 
             if (auth == null)
-               return null;
+                return null;
 
 
-            //else
-            //{
-            //    var tokenHandler = new JwtSecurityTokenHandler();
-            //    var key = Encoding.ASCII.GetBytes(_jwtToken.Secret);
-            //    var tokenDescritor = new SecurityTokenDescriptor()
-            //    {
-            //        Subject = new ClaimsIdentity(new Claim[]
-            //        {
-            //        new Claim(ClaimTypes.Name, auth.Id.ToString())
+            else
+            {
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var key = Encoding.ASCII.GetBytes(_jwtToken.Secret);
+                var tokenDescritor = new SecurityTokenDescriptor()
+                {
+                    Subject = new ClaimsIdentity(new Claim[]
+                    {
+                    new Claim(ClaimTypes.Name, auth.Id.ToString())
 
 
-            //        }),
-            //        Expires = DateTime.UtcNow.AddDays(7),
-            //        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
-            //        SecurityAlgorithms.HmacSha256Signature)
-            //    };
+                    }),
+                    Expires = DateTime.UtcNow.AddDays(7),
+                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
+                    SecurityAlgorithms.HmacSha256Signature)
+                };
 
-            //    var token = tokenHandler.CreateToken(tokenDescritor);
-            //    auth.Token = tokenHandler.WriteToken(token);
+                var token = tokenHandler.CreateToken(tokenDescritor);
+                auth.Token = tokenHandler.WriteToken(token);
                 return auth;
             }
+        }
 
         public UserTable Registers(UserDTO userDTO)
         {
@@ -60,6 +66,7 @@ namespace Booking.Repository
 
                 Email = userDTO.Email,
                 Address = userDTO.Address,
+                Password= Encryption(userDTO.Password),
                 RegisterDate = DateTime.Now,
                 ExpireDate = DateTime.Today.AddDays(2),
                 RefreshDates= DateTime.Now,
@@ -68,7 +75,7 @@ namespace Booking.Repository
                 };
                
                 _context.UserTables.Add(user);
-                _context.SaveChanges();
+               
             return user;
 
            

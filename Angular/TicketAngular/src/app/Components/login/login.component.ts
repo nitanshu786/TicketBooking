@@ -20,6 +20,8 @@ export class LoginComponent {
     this.loginrservice.loginup(this.login).subscribe(
       (response)=>{
      
+     this.router.navigateByUrl("/home")
+     
       },
       (error)=>{
         console.log(error);

@@ -1,3 +1,4 @@
+import { JwtTokenService } from './Services/jwt-token.service';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -8,7 +9,12 @@ import { TicketComponent } from './Components/ticket/ticket.component';
 import { RegisterComponent } from './Components/register/register.component';
 import { LoginComponent } from './Components/login/login.component';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule,HTTP_INTERCEPTORS } from '@angular/common/http';
+import { BookingComponent } from './Components/booking/booking.component';
+import { JwtModule } from '@auth0/angular-jwt';
+import { CartComponent } from './Components/cart/cart.component';
+import { PasswordComponent } from './Components/password/password.component';
+
 
 @NgModule({
   declarations: [
@@ -16,15 +22,32 @@ import { HttpClientModule } from '@angular/common/http';
     HomeComponent,
     TicketComponent,
     RegisterComponent,
-    LoginComponent
+    LoginComponent,
+    BookingComponent,
+    CartComponent,
+    PasswordComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule,
+    JwtModule.forRoot({
+      config:{
+        tokenGetter:()=>{
+return sessionStorage.getItem("CurrentUser")? JSON.parse(sessionStorage.getItem("CurrentUser") as string).token:null
+        }
+      }
+    })
   ],
-  providers: [],
+  providers: [
+    {
+      provide:HTTP_INTERCEPTORS,
+      useClass:JwtTokenService,
+      multi:true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

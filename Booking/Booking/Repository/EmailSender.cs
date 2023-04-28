@@ -32,6 +32,7 @@ namespace Booking.Repository
         }
         public async Task Execute(string email, string subject )
         {
+            string setpassword = $"http://localhost:4200/password";
             try
             {
                 string ToEmail =  email;
@@ -44,8 +45,9 @@ namespace Booking.Repository
                 mail.CC.Add(_smtpconfig.CcEmail);
                 mail.Subject = "Ticket Booking:" + subject;
                 mail.IsBodyHtml = true;
-                mail.Body = _smtpconfig.Filepath;
-               
+                mail.Body = $"Click this link to set your password: {setpassword}";
+
+
                 mail.Priority = MailPriority.High;
                 using (SmtpClient smtp = new SmtpClient(_smtpconfig.PrimaryDomain, _smtpconfig.PrimaryPort))
                 {
