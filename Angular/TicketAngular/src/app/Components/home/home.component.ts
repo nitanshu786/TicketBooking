@@ -7,6 +7,9 @@ import { TicketService } from 'src/app/Services/ticket.service';
 import { Booking } from 'src/app/Classes/booking';
 import { Router } from '@angular/router';
 
+
+
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -17,15 +20,17 @@ export class HomeComponent implements OnInit {
   ticket:Ticket[]=[];
   booking:Booking= new Booking();
   data:Ticket= new Ticket;
+  ticketCount: number = 0;
 
-
+ 
   
 
 
-  constructor ( private Ticketservice : TicketService,
+     constructor ( private Ticketservice : TicketService,
      private BookingService: BookingService,
-      private LoginService: LoginService, private router:Router,
-      private CartService:CartService
+     private LoginService: LoginService, private router:Router,
+     private CartService:CartService,
+    
     ){}
   
   
@@ -33,32 +38,31 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.getALL();
   }
-
- 
    getALL()
    {
-     
- 
      this.Ticketservice.GetEmployes().subscribe(
        (respnse)=>{
          this.ticket=respnse
-        
+
+         const ticketIndex = this.ticket.findIndex(s => s.count); 
+      this.ticketCount = this.ticket[ticketIndex].count; 
+
+    
        },
        (error)=>{
          console.log(error);
        }
      )
    }
- 
    bookingticket(emps:Ticket)
    {
-    
    this.data=emps;
-   console.log(emps)
+   this.data.count=1;
     this.CartService.addToCart(this.data);
     this.router.navigateByUrl("/cart")
   
    }
+
 
 
   }

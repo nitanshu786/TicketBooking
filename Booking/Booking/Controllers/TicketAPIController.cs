@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Booking.Data;
 using Booking.Model;
 using Booking.Model.DTO;
 using Booking.Repository.IRepository;
@@ -19,10 +20,12 @@ namespace Booking.Controllers
     {
         private readonly ITicketRepo _ticketRepo;
         private readonly IMapper _mapper;
-        public TicketAPIController(ITicketRepo ticketRepo, IMapper mapper)
+        private readonly ApplicationDbContext _context;
+        public TicketAPIController(ITicketRepo ticketRepo, IMapper mapper, ApplicationDbContext context)
         {
             _ticketRepo = ticketRepo;
             _mapper = mapper;
+            _context = context;
         }
         [AllowAnonymous]
         [Route("get")]
@@ -30,7 +33,10 @@ namespace Booking.Controllers
         public IEnumerable<TicketDTO> GetTickets()
         {
             var tickets = _ticketRepo.GetAll();
-            return _mapper.Map<IEnumerable<TicketDTO>>(tickets);
+           return _mapper.Map<IEnumerable<TicketDTO>>(tickets);
+         
+           
+           
         }
     
         [HttpGet("{id:int}")]

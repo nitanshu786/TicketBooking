@@ -9,27 +9,20 @@ import { Register } from '../Classes/register';
 export class RegisterService {
 
   constructor(private httpclient:HttpClient ) { }
-
-
+ 
   checkUser(newemp:Register):Observable<Register>
   {
-
-    return this.httpclient.post<Register>("https://localhost:44334/api/RegisterAPI/register",newemp);
+      
+    return this.httpclient.put<Register>("https://localhost:44334/api/RegisterAPI/update",newemp);
   }
  emailuser(email:Register):Observable<Register>
  {
-  debugger;
-  return this.httpclient.post<Register>("https://localhost:44334/api/RegisterAPI/email",email).
+  
+  return this.httpclient.post<Register>("https://localhost:44334/api/RegisterAPI/register",email)
 
-  pipe(map(u=>{
-        if(u)
-        {
-          sessionStorage["register"]=JSON.stringify(u);
-        }
-    return u;
-  }))
-    } 
+  
  }
+}
   
 
 

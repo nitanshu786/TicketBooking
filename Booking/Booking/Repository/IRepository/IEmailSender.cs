@@ -7,7 +7,7 @@ namespace Booking.Repository.IRepository
 {
   public  interface IEmailSender
     {
-        Task SendEmailAsync(string email, string subject);
+        Task SendEmailAsync(string email, string subject,int id);
        
     }
 }

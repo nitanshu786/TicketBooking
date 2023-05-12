@@ -33,7 +33,23 @@ namespace Booking.Repository
 
         public IEnumerable<TicketTable> GetAll()
         {
-            return _context.TicketTables.Where(s => !s.IsDeleted);
+            var data= _context.TicketTables.Where(s => !s.IsDeleted);
+            foreach (var item in data)
+            {
+                var books = _context.BookingTables.Where(s => s.TicketId == item.Id).Sum(s => s.Count);
+                if (books != 0)
+                {
+                    item.Count = item.Count - books;
+                  if(item.Count<=0)
+                    {
+                        var count = books + item.Count;
+                        item.Count = count;
+                    }
+                    
+                }
+
+            }
+            return data;
         }
 
         public TicketTable GetById(int id)
@@ -43,7 +59,8 @@ namespace Booking.Repository
 
         public void UpdateTicket(TicketTable ticket)
         {
-            _context.TicketTables.Update(ticket);
+           var item=  _context.TicketTables.Update(ticket);
+
             _context.SaveChanges();
         }
     }

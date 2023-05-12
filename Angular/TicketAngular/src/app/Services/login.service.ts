@@ -32,13 +32,10 @@ export class LoginService {
           {
             this.CourentUser=u.email;
             this.Roles=u.role
+            console.log(this.Roles)
              sessionStorage["id"]=JSON.stringify(u.id);
              sessionStorage["role"]=JSON.stringify(u.role)
-            
-            //  const user= sessionStorage.getItem('role')as string;
-            //  const users =JSON.parse(user);
-            //  this.Roles= users;
-          
+             
             sessionStorage["CurrentUser"]=JSON.stringify(u);
           }
       return u;
@@ -59,21 +56,13 @@ export class LoginService {
       // }
       public isAuthentication():boolean
       {
-       
         if(this.jwtHealper.isTokenExpired())
         {
           return false;
         }
-       
        else
        {
             return true;
        }
-
-
-  
-         
-       
-        
       }
 }

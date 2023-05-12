@@ -9,8 +9,10 @@ namespace Booking.Repository.IRepository
 {
    public interface IRegister
     {
-        bool IsUniqueUser(string Name,string email);
+        bool IsUniqueUser(string email);
         UserTable Login(string Email, string Passward);
         UserTable Registers(UserDTO userDTO);
+        UserTable UpdateRegister(UserTable user);
+
     }
 }

@@ -7,9 +7,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
+
 namespace Booking.Repository
 {
-    public class BookingRepo:IBookingRepo
+    public class BookingRepo : IBookingRepo
     {
 
         private readonly ApplicationDbContext _context;
@@ -19,15 +20,31 @@ namespace Booking.Repository
             _context = context;
         }
 
-        public void AddTicket(BookingTable bookingTable)
-        { 
-            _context.BookingTables.Add(bookingTable);
-           _context.SaveChanges();
+        public BookingTable AddTicket(BookingTable bookingTable)
+        {
+
+            if (bookingTable != null)
+            {
+              
+               
+                var item = _context.BookingTables.Where(s => s.TicketId == bookingTable.TicketId).FirstOrDefault(s => s.UserId == bookingTable.UserId);
+
+                if (item != null && item.UserId == bookingTable.UserId)
+                {
+                    item.Count = item.Count + bookingTable.Count;
+
+                    _context.SaveChanges();
+                    return bookingTable;
+                }
+                 _context.BookingTables.Add(bookingTable);
+                 _context.SaveChanges();
+                  return bookingTable;  
+            }
+            else
+            {
+                return null;
+            }
         }
-
-        
-
-
         public void DeleteTicket(int id)
         {
             var find = _context.BookingTables.Find(id);
@@ -37,7 +54,8 @@ namespace Booking.Repository
 
         public IEnumerable<BookingTable> GetAll()
         {
-            return _context.BookingTables.Include(x=>x.TicketTable).Include(x=>x.UserTable).ToList();
+            return _context.BookingTables.Include(x => x.TicketTable).Include(x => x.UserTable).ToList();
+
         }
 
     }

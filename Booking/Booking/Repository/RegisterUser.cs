@@ -28,11 +28,8 @@ namespace Booking.Repository
         public UserTable Login(string Email, string Passward)
         {
             var auth = _context.UserTables.FirstOrDefault(s => s.Email == Email && s.Password == Passward);
-
-
             if (auth == null)
                 return null;
-
 
             else
             {
@@ -66,7 +63,7 @@ namespace Booking.Repository
 
                 Email = userDTO.Email,
                 Address = userDTO.Address,
-                Password= Encryption(userDTO.Password),
+              
                 RegisterDate = DateTime.Now,
                 ExpireDate = DateTime.Today.AddDays(2),
                 RefreshDates= DateTime.Now,
@@ -75,7 +72,7 @@ namespace Booking.Repository
                 };
                
                 _context.UserTables.Add(user);
-               
+            _context.SaveChanges();
             return user;
 
            
@@ -92,11 +89,11 @@ namespace Booking.Repository
             }
         }
 
-        public bool IsUniqueUser(string Name, string email)
+        public bool IsUniqueUser( string email)
         {
             
             
-                var uniq = _context.UserTables.FirstOrDefault(s => s.Name == Name && s.Email==email);
+                var uniq = _context.UserTables.FirstOrDefault(s =>  s.Email==email);
 
                 if (uniq == null)
                 {
@@ -105,6 +102,23 @@ namespace Booking.Repository
                 else
                     return false;
             }
+
+        public UserTable UpdateRegister(UserTable userTable)
+        {
+          
+            var find = _context.UserTables.FirstOrDefault(s => s.Id == userTable.Id );
+            if (find != null)
+                find.Password = Encryption(userTable.Password);
+              
+                _context.UserTables.Update(find);
+                _context.SaveChanges();
+            return find;
+            
+            
+               
+           
+            
         }
+    }
     
 }

@@ -21,53 +21,48 @@ namespace Booking.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IBookingRepo _booking;
+        private readonly ITicketRepo _ticketRepo;
         private readonly IMapper _mapper;
 
-        public BookingAPIController(IBookingRepo booking, IMapper mapper, ApplicationDbContext context)
+        public BookingAPIController(IBookingRepo booking, IMapper mapper, ApplicationDbContext context, ITicketRepo ticketRepo)
         {
             _booking = booking;
             _mapper = mapper;
             _context = context;
+            _ticketRepo = ticketRepo;
         }
 
         [HttpGet]
         public IEnumerable<BookingDTO> GetALL()
         {
+            
             var bookings = _booking.GetAll();
-            return _mapper.Map<IEnumerable<BookingDTO>>(bookings);
+           return _mapper.Map<IEnumerable<BookingDTO>>(bookings);
+
+
         }
 
         [HttpPost]
         public IActionResult post([FromBody] BookingDTO booking)
         {
-            try
+           
+            if (booking == null)
+                return BadRequest("something went wrong while save data");
+            var items = _ticketRepo.GetAll();
+            var counts = items.FirstOrDefault(s => s.Id == booking.TicketId);
+            if(counts.Count<booking.Count)
             {
-                // Check if there are enough tickets available
-                var ticket = _context.TicketTables.FirstOrDefault(s=>s.Id==booking.TicketId);
-                if (ticket.Count <= booking.Count)
-                {
-                    return BadRequest("Not enough tickets available.");
-                }
-               
-                
-                ticket.Count -= booking.Count;
-                _context.Entry(ticket).State = EntityState.Modified;
-                var data = _mapper.Map<BookingDTO, BookingTable>(booking);
-                _booking.AddTicket(data);
-                return Ok(data);
-              
-
-                
+                return null;
             }
-            catch (Exception ex)
+            if (counts!=null)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+                counts.Count = counts.Count - booking.Count;
             }
-            //if (booking == null && booking.Count>=20)
-            //    return BadRequest("something went wrong while save data");
-            //var data = _mapper.Map<BookingDTO, BookingTable>(booking);
-            //_booking.AddTicket(data);
-            //return Ok(data);
+            var data = _mapper.Map<BookingDTO, BookingTable>(booking);
+          var save =  _booking.AddTicket(data);
+            if (save == null)
+                return BadRequest(ModelState);
+            return Ok(data);
         }
 
         [HttpDelete("{id:int}")]

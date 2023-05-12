@@ -3,6 +3,7 @@ export class Ticket {
         name:string;
         image:string;
         count:number;
+        userid:number;
 
         constructor ()
         {
@@ -10,6 +11,7 @@ export class Ticket {
             this.name="",
             this.image="",
             this.count=0
+            this.userid=0
         }
 
 }

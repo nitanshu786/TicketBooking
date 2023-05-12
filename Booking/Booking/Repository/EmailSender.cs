@@ -23,16 +23,17 @@ namespace Booking.Repository
             _smtpconfig = smtpconfig.Value;
             _context=context;
         }
-        public  Task SendEmailAsync(string email, string subject)
+        public  Task SendEmailAsync(string email, string subject , int id)
         {
           
            
-            Execute(email, subject).Wait();
+            Execute(email, subject,id).Wait();
             return Task.FromResult(0);
         }
-        public async Task Execute(string email, string subject )
+        public async Task Execute(string email, string subject,int id )
         {
-            string setpassword = $"http://localhost:4200/password";
+            var setpassword = "http://localhost:4200/password/?id="+ id;
+           
             try
             {
                 string ToEmail =  email;

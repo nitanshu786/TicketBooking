@@ -15,7 +15,8 @@ export class RoleguardService {
   
   log:Login= new Login();
 
-  constructor(private login:LoginService, private router:Router, private jwthealper:JwtActiveGuardService) { }
+  constructor(private login:LoginService, private router:Router,
+     private jwthealper:JwtActiveGuardService) { }
  
   canActivate(route: ActivatedRouteSnapshot,state:RouterStateSnapshot): boolean{
    

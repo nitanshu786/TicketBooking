@@ -1,0 +1,25 @@
+.swal2-progresssteps .swal2-progress-step {
+    background-color: #3498db;
+  }
+  
+  .swal2-progresssteps .swal2-progress-step.swal2-active-progress-step {
+    background-color: #2ecc71;
+    animation: progress-bar 2s linear infinite;
+  }
+  
+  @keyframes progress-bar {
+    0% {
+      width: 0;
+    }
+    100% {
+      width: 100%;
+    }
+    
+  }
+
+  button.disabled {
+    pointer-events: none;
+    opacity: 0.5; /* Optionally reduce the opacity to visually indicate the disabled state */
+  }
+  
+  

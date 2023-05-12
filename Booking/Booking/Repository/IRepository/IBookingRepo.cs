@@ -10,6 +10,6 @@ namespace Booking.Repository.IRepository
     {
         IEnumerable<BookingTable> GetAll();
         void DeleteTicket(int id);
-        void AddTicket(BookingTable bookingTable);
+        BookingTable AddTicket(BookingTable bookingTable);
     }
 }

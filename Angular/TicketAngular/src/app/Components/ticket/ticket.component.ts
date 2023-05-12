@@ -16,7 +16,6 @@ export class TicketComponent {
   ticketlist: Ticket[]=[];
   NewTicket:Ticket= new Ticket();
   EditTicket:Ticket= new Ticket();
-  
   url:any;
   
  
@@ -65,6 +64,13 @@ export class TicketComponent {
     
     this.Ticketservice.saveEmployes(this.NewTicket). subscribe(
       (response)=>{
+
+        Swal.fire({
+          icon: 'success',
+          title: 'Data saved successfully',
+          showConfirmButton: false,
+          timer: 1500
+        });
         this .getALL();
         this.NewTicket.name="";
        
@@ -86,6 +92,12 @@ export class TicketComponent {
   {
     this.Ticketservice.updateemploye(this.EditTicket).subscribe(
       (response)=>{
+        Swal.fire({
+          icon: 'success',
+          title: 'Data Updated successfully',
+          showConfirmButton: false,
+          timer: 1500
+        });
         this.getALL();
       },
       

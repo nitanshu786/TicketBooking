@@ -5,6 +5,8 @@ import { TicketService } from './Services/ticket.service';
 import { Ticket } from './Classes/ticket';
 import { Role } from './Classes/role';
 import { Login } from './Classes/login';
+import { Router } from '@angular/router';
+import { CartService } from './Services/cart.service';
 
 
 @Component({
@@ -15,20 +17,31 @@ import { Login } from './Classes/login';
 })
 export class AppComponent implements OnInit {
   title = 'TicketAngular';
-  roles:any;
+
+  count=0;
   
+ 
+
 
   
 
-  
-  constructor( public loginapi:LoginService) { 
-   
+  constructor( public loginapi:LoginService,private router: Router,
+    private CartService: CartService) { 
   }
 
-ngOnInit(): void {   
-}
+ngOnInit(): void {  
+   
+  this.CartService.getCartItemCount().subscribe(counts=>{
+  
+    this.count = counts;
+  })
+ 
+  
+  }
+  
   Logot()
   {
     this.loginapi.LogOut();
   }
+
 }

@@ -14,6 +14,15 @@ import { BookingComponent } from './Components/booking/booking.component';
 import { JwtModule } from '@auth0/angular-jwt';
 import { CartComponent } from './Components/cart/cart.component';
 import { PasswordComponent } from './Components/password/password.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
+
+
+
 
 
 @NgModule({
@@ -25,7 +34,8 @@ import { PasswordComponent } from './Components/password/password.component';
     LoginComponent,
     BookingComponent,
     CartComponent,
-    PasswordComponent
+    PasswordComponent,
+   
   ],
   imports: [
     BrowserModule,
@@ -33,13 +43,19 @@ import { PasswordComponent } from './Components/password/password.component';
     FormsModule,
     HttpClientModule,
     FormsModule,
+    MatProgressSpinnerModule,
+    MatInputModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    MatIconModule,
     JwtModule.forRoot({
       config:{
         tokenGetter:()=>{
 return sessionStorage.getItem("CurrentUser")? JSON.parse(sessionStorage.getItem("CurrentUser") as string).token:null
         }
       }
-    })
+    }),
+    BrowserAnimationsModule
   ],
   providers: [
     {

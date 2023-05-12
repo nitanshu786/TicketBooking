@@ -1,42 +1,43 @@
 
-
-
-
-   
-        <div class="backgroundWhiteBorder">
+        <div class="backgroundWhiteBorder p-4  " >
             <div class="container">
                 <div class="card">
                     <div class="card-header bg-dark text-light ml-0 row container">
                         <div class="col-6">
                             <i class="fa fa-shopping-cart"></i> &nbsp;
-                            Shopping Cart
+                            Booking Cart
                         </div>
                         <div class="col-6 text-right">
                             <a routerLink="/home" class="btn btn-outline-info btn-sm">Continue Booking</a>
 
                         </div>
                     </div>
-                    <div class="card-body" *ngFor="let emp of book">
-              
+                    <div class="card-body" *ngFor="let emp of book" >
                             <div class="row">
                                 <div class=" col-lg-1 ">
                                     <img [src]="emp.image" class="rounded" width="100%" />
                                 </div>
                                 <div class="col ">
-                                    <h5><strong> Movie Name:{{emp.name}}</strong></h5>
+                                    <h3> Movie Name:<a class="text-info">{{emp.name}}</a></h3>
                                     
                                 </div>
                                 <div class="col">
                                     <label for="count" class="col-sm-4" >Count</label>
-                                    <div class="col-sm-8">
-                            <input id="count"  type="number" [(ngModel)]="booking.count"  name="name"  class="form-control"/>
+                                    <div class="col-sm-8 ">
+                                     <input id="count"  type="number" [(ngModel)]="emp.count"  [value]="emp.count" [readonly]="true"  name="count" 
+                                       class="form-control" />
+                                  
                                     </div>
+                                    <button (click)="decreaseCount(emp)" class="btn btn-outline-danger m-3"[ngClass]="{'disabled': emp.count <= 1}" ><i class="fa fa-minus"></i></button>
+                                    <span></span>
+                                    <button (click)="increaseCount(emp)" class="btn btn-outline-info" ><i class="fa fa-plus"></i></button>
                                 </div>
+                               
                             </div>
                             
                                 <div class="row">
                                    <div class="col-9">
-
+                                   
                                    </div>
                                     
                                     <div class="col-3 col-sm-4 col-lg-2 text-right">
@@ -44,6 +45,7 @@
                                             <i class="fa fa-trash"></i>
                                         </a>
                                     </div>
+                                   
                                 </div>
                         
                         
@@ -53,18 +55,26 @@
                         <div class="row">
                             <div class="col-12 col-md-6 offset-md-6 col-lg-4 offset-lg-8 pr-4">
                                 <ul class="list-group">
-                                    <button class="list-group-item d-flex justify-content-between bg-light">
-                                        <span class="text-info"(click)="bookingticket(emp.id)" >Buy Ticket</span>
-                                        
+                                    <button class="list-group-item d-flex justify-content-between bg-light" (click)="bookingticket(emp)" [disabled]="book.length === 0" >
+                                        <span class="text-info">Buy Ticket</span>
                                     </button>
                                 </ul>
                             </div>
                         </div>
+                       
                     </div>
+             
+                                   
+                 
+                  
                
                 </div>
+               
             </div>
         </div>
+      
+       
+          
    
 
 
